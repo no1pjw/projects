@@ -1,9 +1,35 @@
 import os
 import time
+import sys
+from PyQt5.QtWidgets import *   
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5 import uic, QtWidgets
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 print(os.getcwd())
 
+form_class = uic.loadUiType("main_widget.ui")[0]
+
+class MyWindow(QMainWindow, form_class):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+class MyApp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        file_list = os.listdir(os.getcwd())
+        listview = QListView(self)
+        model = QStandardItemModel()
+        for a in file_list:
+            model.appendRow(QStandardItem(a))
+        listview.setModel(model)
+        self.resize(500, 400)
+        self.show()
 def return_path(string):
     event_txt = list(str(string))
     path = ''
@@ -48,8 +74,11 @@ class Handler(FileSystemEventHandler):
 
     def on_created(self, event): #파일, 디렉터리가 생성되면 실행
         path = return_path(event)
-        file = open(path, 'r')
-        print(file.read())
+        if True:
+            print("detected!")
+            os.remove(path)
+            print("removed!")
+            
     def on_deleted(self, event): #파일, 디렉터리가 삭제되면 실행
         print(type(event))
 
@@ -57,6 +86,9 @@ class Handler(FileSystemEventHandler):
         print(type(event))
 
 if __name__ == '__main__': #본 파일에서 실행될 때만 실행되도록 함
+    app = QApplication(sys.argv)
+    ex = MyApp()
+    sys.exit(app.exec_())
     w = Target()
     w.run()
 
