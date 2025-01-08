@@ -11,24 +11,24 @@ print(os.getcwd())
 
 form_class = uic.loadUiType("main_widget.ui")[0]
 
-class MyWindow(QMainWindow, form_class):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-
 class MyApp(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
-    def initUI(self):
-        file_list = os.listdir(os.getcwd())
-        listview = QListView(self)
-        model = QStandardItemModel()
-        for a in file_list:
-            model.appendRow(QStandardItem(a))
-        listview.setModel(model)
-        self.resize(500, 400)
+    def initUI(self):   
+        label1 = QLabel('Label1', self)
+        label1.move(20, 20)
+        label2 = QLabel('Label2', self)
+        label2.move(20, 60)
+        
+        btn1 = QPushButton('Button1', self)
+        btn1.move(80, 13)
+        btn2 = QPushButton('Button2', self)
+        btn2.move(80, 53)
+        
+        self.setWindowTitle('Absolute Positioning')
+        self.setGeometry(300, 300, 400, 200)
         self.show()
 def return_path(string):
     event_txt = list(str(string))
