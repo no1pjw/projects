@@ -11,8 +11,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+import java.io.Serializable
+
+class User(var id : String, var pw : String): Serializable{
+    constructor(): this("", "")
+}
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        var dbHelper = DBHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val clickme = findViewById<Button>(R.id.click_me)
@@ -22,12 +31,26 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         clickme.setOnClickListener{
-            val value = findViewById<EditText>(R.id.password)
-            if(value.text.toString() == "hacked"){
-                Toast.makeText(this, "DH{y0u_a4e_a_h4ck3r!}", Toast.LENGTH_SHORT).show()
+            var id = findViewById<EditText>(R.id.id).text.toString()
+            var password = findViewById<EditText>(R.id.password).text.toString()
+            var Find = dbHelper.login(id, password)
+            if(id == ""){
+                Toast.makeText(this, this.getString(R.string.input_id), Toast.LENGTH_SHORT).show()
             }
-            else
-                Toast.makeText(this, "Button Clicked", Toast.LENGTH_SHORT).show()
+            else if(password == ""){
+                Toast.makeText(this, this.getString(R.string.input_password), Toast.LENGTH_SHORT).show()
+            }
+            else{
+                if (Find){
+                    Toast.makeText(this, this.getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+                    Thread.sleep(500)
+                    val intent = Intent(this, MainActivity2::class.java)
+                    startActivity(intent)
+                }
+                else{
+                    Toast.makeText(this, this.getString(R.string.login_failed), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
