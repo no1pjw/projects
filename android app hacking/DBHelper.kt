@@ -5,8 +5,8 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-class DBHelper(context: Context?, name:String?, factory:SQLiteDatabase.CursorFactory?, version: Int)
-    : SQLiteOpenHelper(context, name, factory, version) {
+class DBHelper(context: Context)
+    : SQLiteOpenHelper(context, "Login.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
         val sql: String = " CREATE TABLE IF NOT EXISTS MYTABLE( " +
                 " SEQ INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -20,17 +20,27 @@ class DBHelper(context: Context?, name:String?, factory:SQLiteDatabase.CursorFac
         onCreate(db)
     }
 
-    fun insert(db: SQLiteDatabase, id: String, pw: String) {
-        val sql = " INSERT INTO MYTABLE(ID, PASSWORD) VALUES ('${id}', '${pw}') "
-        db?.execSQL(sql)
+    fun insert(id: String, pw: String) {
+        val db = this.writableDatabase
+        val sql = db.rawQuery(" INSERT INTO MYTABLE(ID, PASSWORD) VALUES (?, ?) ", arrayOf(id, pw))
+        val result = sql.moveToFirst()
+        sql.close()
     }
 
-    fun check(db: SQLiteDatabase, id: String): String? {
-        val sql = "SELECT * FROM MYTABLE " +
-                "WHERE ID = '${id}'"
-        var result = db.rawQuery(sql, null)
-        return result.getString(0)
-
+    fun check(id: String): Boolean {
+        val db = this.readableDatabase
+        val sql = db.rawQuery("SELECT * FROM MYTABLE WHERE id = ?", arrayOf(id))
+        var result = sql.moveToFirst()
+        sql.close()
+        return result
+    }
+    fun login(id: String, pw: String): Boolean{
+        val db = this.readableDatabase
+        println(db)
+        val sql = db.rawQuery("SELECT * FROM MYTABLE WHERE id = ? and password = ?", arrayOf(id, pw))
+        var result = sql.moveToFirst()
+        sql.close()
+        return result
     }
 
     }
