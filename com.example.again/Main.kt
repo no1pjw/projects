@@ -20,6 +20,8 @@ class Main : AppCompatActivity() {
     private lateinit var chatAdapter: ChatAdapter
     private val chatMessages = mutableListOf<ChatMessage>()
     override fun onCreate(savedInstanceState: Bundle?) {
+        var id  = intent.getStringExtra("id").toString()
+        var dbHelper = DBHelper(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
         editTextMessage = findViewById(R.id.editTextMessage)
@@ -29,18 +31,22 @@ class Main : AppCompatActivity() {
         chatAdapter = ChatAdapter(chatMessages)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = chatAdapter
-
-        // 실시간 메시지 수신
-        Chat().receiveMessages { message ->
-            chatMessages.add(message)
-            chatAdapter.notifyDataSetChanged()
+        if(dbHelper.check_name(id) == "***"){
+            val intent = Intent(this, First_trial::class.java)
+            intent.putExtra("id", id)
+            startActivity(intent)
         }
-
-        // 메시지 전송 버튼 클릭 이벤트
+        var name = dbHelper.check_name(id)
+        Chat().receiveMessages { message ->
+            if (!chatMessages.contains(message)) {
+                chatMessages.add(message)
+                chatAdapter.notifyDataSetChanged()
+            }
+        }
         buttonSend.setOnClickListener {
             val message = editTextMessage.text.toString().trim()
             if (message.isNotEmpty()) {
-                Chat().sendMessage("User1", message)
+                Chat().sendMessage(name, message)
                 editTextMessage.text.clear()
             }
         }
