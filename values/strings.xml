@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">CH6_View</string>
+    <string name="main_desc">
+        로그인이 필요합니다.
+    </string>
+    <string name="password_txt">
+        비밀번호가 기억나지 않으세요?
+    </string>
+    <string name="register">
+        저희 서비스에 오신 것을 환영합니다! 아이디와 비밀번호를 적어주세요.
+    </string>
+    <string name="input_id">
+        아이디를 입력해주세요.
+    </string>
+    <string name="is_id_duplicated">
+        중복되는 아이디가 존재합니다.
+    </string>
+    <string name="useable_id">
+        사용 가능한 아이디입니다!
+    </string>
+    <string name="check_id">
+        아이디를 체크해주세요.
+    </string>
+    <string name="input_password">
+        비밀번호를 입력해주세요.
+    </string>
+    <string name="check_password">
+        비밀번호 확인을 해주세요.
+    </string>
+    <string name="password_match_false">
+        비밀번호와 비밀번호 확인이 일치하지 않습니다. 다시 확인해주세요.
+    </string>
+    <string name="login_failed">
+        아이디나 비밀번호가 잘못되었습니다.
+    </string>
+    <string name="login_success">
+        로그인에 성공하였습니다.
+    </string>
+    <string name="wrong_id">
+        아이디는 영문자와 숫자만 포함되어야 하며, 최소한 6글자 이상이어야 합니다.
+    </string>
+    <string name="email_empty">
+        이메일을 입력해주세요.
+    </string>
+    <string name="email">
+        \@gmail.com
+    </string>
+    <string  name="login_again">
+        다시 로그인해주세요.
+    </string>
+</resources>
